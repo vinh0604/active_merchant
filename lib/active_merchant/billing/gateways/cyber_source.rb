@@ -27,7 +27,7 @@ module ActiveMerchant #:nodoc:
     # * To process pinless debit cards through the pinless debit card
     #   network, your Cybersource merchant account must accept pinless
     #   debit card payments.
-    # * The order of the XML elements does matter, make sure to follow the order in 
+    # * The order of the XML elements does matter, make sure to follow the order in
     #   the documentation exactly.
     class CyberSourceGateway < Gateway
       self.test_url = 'https://ics2wstest.ic3.com/commerce/1.x/transactionProcessor'
@@ -694,10 +694,11 @@ module ActiveMerchant #:nodoc:
         else
           if node.parent.name =~ /item/
             parent = node.parent.name + (node.parent.attributes["id"] ? "_" + node.parent.attributes["id"] : '')
-            reply[(parent + '_' + node.name).to_sym] = node.text
+            key = (parent + '_' + node.name).to_sym
           else
-            reply[node.name.to_sym] = node.text
+            key = node.name.to_sym
           end
+          reply[key] = node.text unless reply[key]
         end
         return reply
       end
